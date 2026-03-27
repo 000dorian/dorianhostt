@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Estate | Twój Deweloper Jutra</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- PODSTAWOWE STYLE (Z poprzedniego kroku) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1a2a6c;
+            --accent: #b59410;
+            --dark: #111111;
+            --light: #f8f9fa;
+            --white: #ffffff;
+            --transition: all 0.3s ease-in-out;
+        }
+        body { font-family: 'Montserrat', sans-serif; line-height: 1.6; color: #333; scroll-behavior: smooth; overflow-x: hidden; }
+
+        /* NAWIGACJA */
+        nav { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 8%; background: rgba(255, 255, 255, 0.98); z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.1); }
+        .logo { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 900; color: var(--primary); text-transform: uppercase; }
+        .logo span { color: var(--accent); }
+        nav ul { display: flex; list-style: none; }
+        nav ul li { margin-left: 35px; }
+        nav ul li a { text-decoration: none; color: var(--primary); font-weight: 600; font-size: 14px; text-transform: uppercase; transition: var(--transition); }
+        nav ul li a:hover { color: var(--accent); }
+
+        /* HERO */
+        .hero { height: 100vh; background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--white); padding: 0 20px; }
+        .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(40px, 6vw, 75px); margin-bottom: 20px; }
+        .btn { padding: 18px 45px; background: var(--accent); color: var(--white); text-decoration: none; font-weight: bold; border-radius: 4px; transition: var(--transition); text-transform: uppercase; border: none; cursor: pointer; display: inline-block; }
+        .btn:hover { background: var(--primary); transform: translateY(-5px); }
+
+        /* INWESTYCJE */
+        section { padding: 100px 8%; }
+        .section-title { text-align: center; margin-bottom: 70px; }
+        .section-title h2 { font-family: 'Playfair Display', serif; font-size: 42px; color: var(--primary); }
+        .section-title .line { width: 60px; height: 4px; background: var(--accent); margin: 10px auto 20px; }
+
+        .investments-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 40px; }
+        .card { background: var(--white); box-shadow: 0 15px 35px rgba(0,0,0,0.05); transition: var(--transition); position: relative; }
+        .card:hover { transform: translateY(-10px); }
+        .card-img { height: 300px; background-size: cover; background-position: center; position: relative; }
+        .status-tag { position: absolute; top: 20px; left: 20px; background: var(--accent); color: white; padding: 5px 15px; font-size: 12px; font-weight: bold; }
+        .card-content { padding: 30px; }
+        .card-content h3 { font-family: 'Playfair Display', serif; font-size: 24px; margin-bottom: 15px; color: var(--primary); }
+        
+        /* Przycisk szczegółów */
+        .details-link { color: var(--accent); font-weight: bold; text-decoration: none; cursor: pointer; display: inline-block; margin-top: 15px; font-size: 14px; text-transform: uppercase; border-bottom: 2px solid transparent; transition: 0.3s; }
+        .details-link:hover { border-bottom: 2px solid var(--accent); letter-spacing: 1px; }
+
+        /* --- MODAL (OKNO SZCZEGÓŁÓW) --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none; /* Ukryte na start */
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--white);
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            animation: modalFadeIn 0.4s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: var(--primary);
+            z-index: 10;
+        }
+
+        .modal-left img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .modal-right { padding: 40px; }
+        .modal-right h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--primary); margin-bottom: 20px; }
+        
+        .specs-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .specs-table td { padding: 12px 0; border-bottom: 1px solid #eee; font-size: 14px; }
+        .specs-table td:first-child { font-weight: bold; color: #777; }
+        .specs-table td:last-child { text-align: right; color: var(--primary); font-weight: 600; }
+
+        .amenities { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .amenity-item { font-size: 13px; display: flex; align-items: center; }
+        .amenity-item i { color: var(--accent); margin-right: 10px; }
+
+        /* PROCES I KONTAKT - SKRÓCONE DLA CZYTELNOŚCI KODU */
+        .process-bg { background: var(--light); text-align: center; }
+        .stats { background: var(--primary); color: white; display: flex; justify-content: space-around; padding: 50px; text-align: center; flex-wrap: wrap; }
+        
+        footer { background: var(--dark); color: white; padding: 40px; text-align: center; }
+
+        /* Responsywność modala */
+        @media (max-width: 850px) {
+            .modal-content { grid-template-columns: 1fr; }
+            .modal-left { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">MODERN<span>ESTATE</span></div>
+        <ul>
+            <li><a href="#home">Start</a></li>
+            <li><a href="#investments">Inwestycje</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Wyjątkowa architektura,<br>Twoja nowa historia.</h1>
+        <p>Nowoczesne apartamenty w standardzie premium.</p>
+        <a href="#investments" class="btn">Poznaj ofertę</a>
+    </section>
+
+    <!-- INWESTYCJE -->
+    <section id="investments">
+        <div class="section-title">
+            <h2>Nasze Inwestycje</h2>
+            <div class="line"></div>
+        </div>
+        
+        <div class="investments-grid">
+            <!-- Inwestycja 1 -->
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80');">
+                    <span class="status-tag">W sprzedaży</span>
+                </div>
+                <div class="card-content">
+                    <h3>Słoneczne Tarasy</h3>
+                    <p>Luksusowe apartamenty w centrum miasta z widokiem na park.</p>
+                    <span class="details-link" onclick="openModal('sun')">Sprawdź detale &rarr;</span>
+                </div>
+            </div>
+
+            <!-- Inwestycja 2 -->
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80');">
+                    <span class="status-tag">Ostatnie lokale</span>
+                </div>
+                <div class="card-content">
+                    <h3>Leśna Enklawa</h3>
+                    <p>Cisza i spokój w otulinie lasu, zaledwie 15 min od centrum.</p>
+                    <span class="details-link" onclick="openModal('forest')">Sprawdź detale &rarr;</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALE (UKRYTE) -->
+    <!-- Modal dla Słoneczne Tarasy -->
+    <div class="modal-overlay" id="modal-sun">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('sun')">&times;</span>
+            <div class="modal-left">
+                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" alt="Słoneczne Tarasy">
+            </div>
+            <div class="modal-right">
+                <h2>Słoneczne Tarasy</h2>
+                <table class="specs-table">
+                    <tr><td>Lokalizacja</td><td>Warszawa, Śródmieście</td></tr>
+                    <tr><td>Liczba mieszkań</td><td>42</td></tr>
+                    <tr><td>Metraże</td><td>35 m² - 120 m²</td></tr>
+                    <tr><td>Termin oddania</td><td>IV kwartał 2024</td></tr>
+                    <tr><td>Cena od</td><td>12 500 zł / m²</td></tr>
+                </table>
+
+                <h4 style="margin-bottom: 15px;">Udogodnienia:</h4>
+                <div class="amenities">
+                    <div class="amenity-item"><i class="fas fa-parking"></i> Parking podziemny</div>
+                    <div class="amenity-item"><i class="fas fa-leaf"></i> Tarasy widokowe</div>
+                    <div class="amenity-item"><i class="fas fa-shield-alt"></i> Monitoring 24h</div>
+                    <div class="amenity-item"><i class="fas fa-bolt"></i> Stacje ładowania EV</div>
+                </div>
+
+                <button class="btn" style="width: 100%;" onclick="alert('Pobieranie katalogu PDF...')">Pobierz prospekt PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal dla Leśna Enklawa -->
+    <div class="modal-overlay" id="modal-forest">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('forest')">&times;</span>
+            <div class="modal-left">
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="Leśna Enklawa">
+            </div>
+            <div class="modal-right">
+                <h2>Leśna Enklawa</h2>
+                <table class="specs-table">
+                    <tr><td>Lokalizacja</td><td>Józefów k. Warszawy</td></tr>
+                    <tr><td>Typ zabudowy</td><td>Domy szeregowe</td></tr>
+                    <tr><td>Powierzchnia ogrodu</td><td>do 150 m²</td></tr>
+                    <tr><td>Termin oddania</td><td>Gotowe do odbioru</td></tr>
+                    <tr><td>Standard</td><td>Premium (Smart Home)</td></tr>
+                </table>
+
+                <h4 style="margin-bottom: 15px;">Udogodnienia:</h4>
+                <div class="amenities">
+                    <div class="amenity-item"><i class="fas fa-tree"></i> Bezpośrednio przy lesie</div>
+                    <div class="amenity-item"><i class="fas fa-sun"></i> Panele fotowoltaiczne</div>
+                    <div class="amenity-item"><i class="fas fa-bicycle"></i> Ścieżki rowerowe</div>
+                    <div class="amenity-item"><i class="fas fa-child"></i> Prywatny plac zabaw</div>
+                </div>
+
+                <button class="btn" style="width: 100%;" onclick="alert('Przekierowanie do kalendarza spotkań...')">Umów prezentację</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="contact" style="background: #f4f4f4;">
+        <div class="section-title"><h2>Kontakt</h2><div class="line"></div></div>
+        <p style="text-align: center;">Zapraszamy do biura sprzedaży: <strong>+48 123 456 789</strong></p>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 ModernEstate. Wszystkie prawa zastrzeżone.</p>
+    </footer>
+
+    <!-- SKRYPT JS DO OBSŁUGI OKIEN -->
+    <script>
+        function openModal(id) {
+            document.getElementById('modal-' + id).style.display = 'flex';
+            // Blokada przewijania strony pod modalem
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            document.getElementById('modal-' + id).style.display = 'none';
+            // Przywrócenie przewijania
+            document.body.style.overflow = 'auto';
+        }
+
+        // Zamknij modal po kliknięciu poza okno (w tło)
+        window.onclick = function(event) {
+            if (event.target.className === 'modal-overlay') {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+
+</body>
+</html>
+    </style>
+</head>
+<body>
+
+    <!-- Nawigacja -->
+    <nav>
+        <div class="logo">MODERN<span>ESTATE</span></div>
+        <ul>
+            <li><a href="#home">Start</a></li>
+            <li><a href="#investments">Inwestycje</a></li>
+            <li><a href="#process">Proces</a></li>
+            <li><a href="#contact">Kontakt</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <h1>Wyjątkowa architektura,<br>Twoja nowa historia.</h1>
+        <p>Projektujemy i budujemy przestrzenie, które łączą nowoczesny styl życia z najwyższym komfortem i bezpieczeństwem.</p>
+        <div class="hero-btns">
+            <a href="#investments" class="btn">Poznaj nasze inwestycje</a>
+        </div>
+    </section>
+
+    <!-- Statystyki -->
+    <section class="stats">
+        <div class="stat-item">
+            <h3>15</h3>
+            <p>Lat na rynku</p>
+        </div>
+        <div class="stat-item">
+            <h3>1200+</h3>
+            <p>Zadowolonych rodzin</p>
+        </div>
+        <div class="stat-item">
+            <h3>24</h3>
+            <p>Ukończone projekty</p>
+        </div>
+        <div class="stat-item">
+            <h3>0%</h3>
+            <p>Opóźnień w oddaniu</p>
+        </div>
+    </section>
+
+    <!-- Inwestycje -->
+    <section id="investments">
+        <div class="section-title">
+            <h2>Nasze Inwestycje</h2>
+            <div class="line"></div>
+            <p>Wybierz miejsce, które najlepiej pasuje do Ciebie</p>
+        </div>
+        
+        <div class="investments-grid">
+            <!-- Karta 1 -->
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80');">
+                    <span class="status-tag">W sprzedaży</span>
+                </div>
+                <div class="card-content">
+                    <h3>Słoneczne Tarasy</h3>
+                    <p>Eleganckie apartamenty z przestronnymi tarasami w centrum miasta. Poczuj puls metropolii.</p>
+                    <br>
+                    <a href="#" style="color: var(--accent); font-weight: bold; text-decoration: none;">Sprawdź detale &rarr;</a>
+                </div>
+            </div>
+            <!-- Karta 2 -->
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80');">
+                    <span class="status-tag">Ostatnie lokale</span>
+                </div>
+                <div class="card-content">
+                    <h3>Leśna Enklawa</h3>
+                    <p>Domki jednorodzinne w otulinie lasu. Spokój, którego potrzebujesz po ciężkim dniu pracy.</p>
+                    <br>
+                    <a href="#" style="color: var(--accent); font-weight: bold; text-decoration: none;">Sprawdź detale &rarr;</a>
+                </div>
+            </div>
+            <!-- Karta 3 -->
+            <div class="card">
+                <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1448630321826-81527fb9a535?auto=format&fit=crop&w=800&q=80');">
+                    <span class="status-tag" style="background: var(--primary);">Wkrótce w ofercie</span>
+                </div>
+                <div class="card-content">
+                    <h3>Sky Tower II</h3>
+                    <p>Nowoczesny wieżowiec premium z inteligentnym systemem zarządzania Smart Home.</p>
+                    <br>
+                    <a href="#" style="color: var(--accent); font-weight: bold; text-decoration: none;">Zapisz się na listę &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Proces Zakupu -->
+    <section id="process" class="process-bg">
+        <div class="section-title">
+            <h2>Jak działamy?</h2>
+            <div class="line"></div>
+            <p>Prosta i bezpieczna droga do Twojego nowego mieszkania</p>
+        </div>
+
+        <div class="process-container">
+            <!-- Krok 1 -->
+            <div class="process-step">
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                    <span class="step-number">01</span>
+                </div>
+                <h3>Wybór</h3>
+                <p>Nasz doradca pomoże Ci wybrać idealny rozkład i nasłonecznienie mieszkania.</p>
+            </div>
+            <!-- Krok 2 -->
+            <div class="process-step">
+                <div class="step-icon">
+                    <i class="fas fa-file-contract"></i>
+                    <span class="step-number">02</span>
+                </div>
+                <h3>Rezerwacja</h3>
+                <p>Podpisujemy prostą umowę rezerwacyjną, aby Twój wybór był bezpieczny.</p>
+            </div>
+            <!-- Krok 3 -->
+            <div class="process-step">
+                <div class="step-icon">
+                    <i class="fas fa-coins"></i>
+                    <span class="step-number">03</span>
+                </div>
+                <h3>Kredyt</h3>
+                <p>Pomagamy w formalnościach bankowych dzięki naszym ekspertom finansowym.</p>
+            </div>
+            <!-- Krok 4 -->
+            <div class="process-step">
+                <div class="step-icon">
+                    <i class="fas fa-building"></i>
+                    <span class="step-number">04</span>
+                </div>
+                <h3>Budowa</h3>
+                <p>Możesz śledzić postępy prac online dzięki comiesięcznym raportom foto.</p>
+            </div>
+            <!-- Krok 5 -->
+            <div class="process-step">
+                <div class="step-icon">
+                    <i class="fas fa-key"></i>
+                    <span class="step-number">05</span>
+                </div>
+                <h3>Odbiór</h3>
+                <p>Przekazujemy Ci klucze do Twojego wymarzonego mieszkania. Witaj w domu!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kontakt -->
+    <section id="contact">
+        <div class="section-title">
+            <h2>Skontaktuj się z nami</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="contact-container">
+            <div class="contact-info">
+                <h3>Masz pytania?</h3>
+                <p style="margin-bottom: 30px;">Nasze biuro sprzedaży jest otwarte od poniedziałku do soboty. Zapraszamy na pyszną kawę i rozmowę o Twojej przyszłości.</p>
+                
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>ul. Nowoczesna 45, 00-001 Warszawa</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <p>+48 123 456 789</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>biuro@modernestate.pl</p>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form action="#">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="text" placeholder="Imię" required>
+                        <input type="text" placeholder="Nazwisko" required>
+                    </div>
+                    <input type="email" placeholder="Twój E-mail" required>
+                    <textarea rows="6" placeholder="W czym możemy pomóc?"></textarea>
+                    <button type="submit" class="btn" style="width: 100%; cursor: pointer;">Wyślij wiadomość</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stopka -->
+    <footer>
+        <div class="logo" style="color: white; margin-bottom: 20px;">MODERN<span>ESTATE</span></div>
+        <div class="footer-socials">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 ModernEstate Deweloper. Realizacja: Twoje Studio.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
