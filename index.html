@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernDev - Twój deweloper</title>
+    <title>ModernDev - Nowoczesne Inwestycje</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .hero-gradient { background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80'); background-size: cover; background-position: center; }
+        .modal-active { overflow: hidden; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -18,123 +19,163 @@
     <nav class="fixed w-full z-50 bg-white/90 backdrop-blur-md shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
-                <div class="text-2xl font-bold tracking-tighter text-blue-900">MODERN<span class="text-blue-500">DEV</span></div>
+                <div class="text-2xl font-bold tracking-tighter text-blue-900 cursor-pointer" onclick="window.scrollTo(0,0)">MODERN<span class="text-blue-500">DEV</span></div>
                 
-                <!-- Menu Desktop -->
                 <div class="hidden md:flex space-x-8 font-medium">
-                    <a href="#start" class="hover:text-blue-600 transition">Start</a>
                     <a href="#inwestycje" class="hover:text-blue-600 transition">Inwestycje</a>
                     <a href="#dlaczego-my" class="hover:text-blue-600 transition">O nas</a>
-                    <a href="#kontakt" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition">Kontakt</a>
+                    <a href="#kontakt" class="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition shadow-lg shadow-blue-200">Kontakt</a>
                 </div>
 
-                <!-- Menu Mobile Button -->
                 <div class="md:hidden">
-                    <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
+                    <button id="mobile-menu-button" class="text-gray-600 focus:outline-none"><i class="fa-solid fa-bars text-2xl"></i></button>
                 </div>
             </div>
         </div>
-        <!-- Mobile Menu list -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t px-4 pb-4 pt-2">
-            <a href="#start" class="block py-2 text-gray-700">Start</a>
-            <a href="#inwestycje" class="block py-2 text-gray-700">Inwestycje</a>
-            <a href="#dlaczego-my" class="block py-2 text-gray-700">O nas</a>
-            <a href="#kontakt" class="block py-2 text-blue-600 font-bold">Kontakt</a>
+            <a href="#inwestycje" class="block py-3 text-gray-700 border-b">Inwestycje</a>
+            <a href="#dlaczego-my" class="block py-3 text-gray-700 border-b">O nas</a>
+            <a href="#kontakt" class="block py-3 text-blue-600 font-bold">Kontakt</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="start" class="hero-gradient h-screen flex items-center justify-center text-center text-white px-4">
+    <section class="hero-gradient h-screen flex items-center justify-center text-center text-white px-4">
         <div class="max-w-3xl">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">Budujemy przestrzeń dla Twojej przyszłości</h1>
-            <p class="text-lg md:text-xl mb-8 text-gray-200">Nowoczesne apartamenty w najlepszych lokalizacjach. Sprawdź nasze aktualne realizacje.</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <a href="#inwestycje" class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-full font-semibold transition">Zobacz inwestycje</a>
-                <a href="#kontakt" class="bg-white/10 backdrop-blur-md hover:bg-white/20 text-white border border-white/30 px-8 py-4 rounded-full font-semibold transition">Umów spotkanie</a>
-            </div>
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">Dom, na który <br><span class="text-blue-400">zasługujesz</span></h1>
+            <p class="text-lg md:text-xl mb-10 text-gray-200 font-light">Łączymy nowoczesną architekturę z funkcjonalnością. Sprawdź nasze najnowsze realizacje w całej Polsce.</p>
+            <a href="#inwestycje" class="bg-white text-blue-900 hover:bg-blue-50 px-10 py-4 rounded-full font-bold transition-all transform hover:scale-105 inline-block shadow-xl">Odkryj Inwestycje</a>
         </div>
     </section>
 
     <!-- Sekcja Inwestycje -->
-    <section id="inwestycje" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Nasze Inwestycje</h2>
-            <div class="w-20 h-1 bg-blue-600 mx-auto mt-4"></div>
+    <section id="inwestycje" class="py-24 max-w-7xl mx-auto px-4">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+            <div>
+                <h2 class="text-4xl font-bold text-gray-900">Aktualne Inwestycje</h2>
+                <p class="text-gray-500 mt-2">Wybierz miejsce idealne dla siebie.</p>
+            </div>
+            <div class="mt-4 md:mt-0 text-blue-600 font-semibold cursor-pointer hover:underline">Zobacz archiwalne projekty &rarr;</div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Karta inwestycji 1 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition">
-                <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" alt="Apartamenty Parkowe" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <span class="text-blue-600 text-sm font-bold uppercase">W sprzedaży</span>
-                    <h3 class="text-xl font-bold mt-2">Apartamenty Parkowe</h3>
-                    <p class="text-gray-600 mt-2">Centrum miasta, blisko natury. Standard premium.</p>
-                    <div class="mt-4 flex items-center text-gray-500 text-sm">
-                        <i class="fa-solid fa-location-dot mr-2"></i> Warszawa, Mokotów
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Karta 1 -->
+            <div onclick="openModal('Apartamenty Parkowe', 'Warszawa, ul. Zielona 5', 'W sprzedaży', 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80', 'Inwestycja charakteryzuje się nowoczesną bryłą i dużymi przeszkleniami. Każdy apartament posiada przestronny balkon lub taras o powierzchni do 40m2. Na dachu budynku znajduje się wspólny ogród dla mieszkańców.')" 
+                 class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100">
+                <div class="relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" class="w-full h-72 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Warszawa</div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold mb-2">Apartamenty Parkowe</h3>
+                    <p class="text-gray-500 text-sm mb-4">Luksus w otoczeniu natury.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-600 font-bold">Sprawdź detale</span>
+                        <div class="bg-blue-50 p-2 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition"><i class="fa-solid fa-plus"></i></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Karta inwestycji 2 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition">
-                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Osiedle Słoneczne" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <span class="text-orange-500 text-sm font-bold uppercase">Ostatnie lokale</span>
-                    <h3 class="text-xl font-bold mt-2">Osiedle Słoneczne</h3>
-                    <p class="text-gray-600 mt-2">Spokojna okolica z doskonałym dojazdem do centrum.</p>
-                    <div class="mt-4 flex items-center text-gray-500 text-sm">
-                        <i class="fa-solid fa-location-dot mr-2"></i> Wrocław, Krzyki
+            <!-- Karta 2 -->
+            <div onclick="openModal('Osiedle Słoneczne', 'Wrocław, ul. Promienna 12', 'Ostatnie lokale', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80', 'Kameralne osiedle 4 budynków wielorodzinnych. Do dyspozycji mieszkańców oddajemy prywatną siłownię oraz strefę relaksu. Osiedle jest w pełni monitorowane i ogrodzone, co zapewnia bezpieczeństwo Twojej rodzinie.')" 
+                 class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100">
+                <div class="relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" class="w-full h-72 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Wrocław</div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold mb-2">Osiedle Słoneczne</h3>
+                    <p class="text-gray-500 text-sm mb-4">Idealne dla młodych rodzin.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-600 font-bold">Sprawdź detale</span>
+                        <div class="bg-blue-50 p-2 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition"><i class="fa-solid fa-plus"></i></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Karta inwestycji 3 -->
-            <div class="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition">
-                <img src="https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=600&q=80" alt="Sky Tower Resicence" class="w-full h-64 object-cover">
-                <div class="p-6">
-                    <span class="text-gray-500 text-sm font-bold uppercase">Wkrótce w ofercie</span>
-                    <h3 class="text-xl font-bold mt-2">Sky Tower Residence</h3>
-                    <p class="text-gray-600 mt-2">Nowoczesny wieżowiec z widokiem na panoramę miasta.</p>
-                    <div class="mt-4 flex items-center text-gray-500 text-sm">
-                        <i class="fa-solid fa-location-dot mr-2"></i> Gdańsk, Przymorze
+            <!-- Karta 3 -->
+            <div onclick="openModal('Sky Tower Residence', 'Gdańsk, ul. Morska 1', 'Wkrótce', 'https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=800&q=80', 'Najwyższy budynek w regionie z zapierającym dech w piersiach widokiem na Zatokę Gdańską. Inwestycja obejmuje inteligentne systemy zarządzania domem (Smart Home) w standardzie oraz całodobową usługę concierge.')" 
+                 class="group bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-300 cursor-pointer border border-gray-100">
+                <div class="relative overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1448630360428-65456885c650?auto=format&fit=crop&w=800&q=80" class="w-full h-72 object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">Gdańsk</div>
+                </div>
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold mb-2">Sky Tower Residence</h3>
+                    <p class="text-gray-500 text-sm mb-4">Prestiż i widok na morze.</p>
+                    <div class="flex items-center justify-between">
+                        <span class="text-blue-600 font-bold">Sprawdź detale</span>
+                        <div class="bg-blue-50 p-2 rounded-full text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition"><i class="fa-solid fa-plus"></i></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sekcja Dodatkowa: Dlaczego My -->
-    <section id="dlaczego-my" class="py-20 bg-blue-900 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <div>
-                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Budujemy z pasją od 15 lat</h2>
-                    <p class="text-blue-100 mb-8 leading-relaxed">Stawiamy na jakość, nowoczesną architekturę i ekologiczne rozwiązania. Każdy nasz projekt to przemyślana przestrzeń, która ma służyć pokoleniom.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Najwyższa jakość materiałów</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Terminowość oddania kluczy</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-green-400 mr-3"></i> Wsparcie w finansowaniu</li>
-                    </ul>
+    <!-- Modal (Popup z informacjami) -->
+    <div id="infoModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="bg-white w-full max-w-4xl rounded-3xl overflow-hidden relative shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-10 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <div class="md:w-1/2">
+                <img id="modalImg" src="" class="w-full h-full object-cover min-h-[300px]">
+            </div>
+            
+            <div class="md:w-1/2 p-8 md:p-12">
+                <span id="modalStatus" class="text-blue-600 text-sm font-bold uppercase tracking-widest"></span>
+                <h2 id="modalTitle" class="text-3xl font-bold mt-2 mb-4 text-gray-900"></h2>
+                <div class="flex items-center text-gray-500 mb-6 italic text-sm">
+                    <i class="fa-solid fa-location-dot mr-2"></i> <span id="modalLoc"></span>
                 </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-blue-800 p-8 rounded-2xl text-center">
-                        <div class="text-4xl font-bold mb-2">1500+</div>
-                        <div class="text-blue-300">Oddanych mieszkań</div>
+                <div class="space-y-4 text-gray-600 leading-relaxed">
+                    <p id="modalDesc"></p>
+                </div>
+                <div class="mt-8 pt-8 border-t border-gray-100 grid grid-cols-2 gap-4">
+                    <div class="text-center bg-gray-50 p-4 rounded-2xl">
+                        <i class="fa-solid fa-shield-halved text-blue-600 mb-2"></i>
+                        <p class="text-xs font-semibold">Gwarancja 5 lat</p>
                     </div>
-                    <div class="bg-blue-800 p-8 rounded-2xl text-center">
-                        <div class="text-4xl font-bold mb-2">15</div>
-                        <div class="text-blue-300">Lat doświadczenia</div>
+                    <div class="text-center bg-gray-50 p-4 rounded-2xl">
+                        <i class="fa-solid fa-leaf text-green-600 mb-2"></i>
+                        <p class="text-xs font-semibold">Eko Rozwiązania</p>
                     </div>
-                    <div class="bg-blue-800 p-8 rounded-2xl text-center">
-                        <div class="text-4xl font-bold mb-2">24</div>
-                        <div class="text-blue-300">Nagrody architektoniczne</div>
+                </div>
+                <a href="#kontakt" onclick="closeModal()" class="mt-8 block text-center bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition shadow-lg">Zapytaj o ofertę</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sekcja Dlaczego My -->
+    <section id="dlaczego-my" class="py-24 bg-blue-900 text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-4xl font-bold mb-8">Standard, który definiuje nową jakość</h2>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-blue-800 p-3 rounded-lg mr-4"><i class="fa-solid fa-building"></i></div>
+                            <div>
+                                <h4 class="text-xl font-bold">Materiały Premium</h4>
+                                <p class="text-blue-200">Stosujemy tylko atestowane materiały od sprawdzonych dostawców.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-800 p-3 rounded-lg mr-4"><i class="fa-solid fa-tree"></i></div>
+                            <div>
+                                <h4 class="text-xl font-bold">Zrównoważony Rozwój</h4>
+                                <p class="text-blue-200">Panele fotowoltaiczne i systemy odzyskiwania wody deszczowej.</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-blue-800 p-8 rounded-2xl text-center">
-                        <div class="text-4xl font-bold mb-2">100%</div>
-                        <div class="text-blue-300">Zadowolonych klientów</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-lg p-10 rounded-3xl border border-white/10">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-blue-300">Nasz wpływ na rynek</h3>
+                    <div class="grid grid-cols-2 gap-8 text-center">
+                        <div><div class="text-4xl font-bold mb-2">1500+</div><p class="text-sm text-blue-200 uppercase tracking-widest">Kluczy</p></div>
+                        <div><div class="text-4xl font-bold mb-2">15 lat</div><p class="text-sm text-blue-200 uppercase tracking-widest">Wiedzy</p></div>
+                        <div><div class="text-4xl font-bold mb-2">12</div><p class="text-sm text-blue-200 uppercase tracking-widest">Miast</p></div>
+                        <div><div class="text-4xl font-bold mb-2">100%</div><p class="text-sm text-blue-200 uppercase tracking-widest">Pasji</p></div>
                     </div>
                 </div>
             </div>
@@ -142,69 +183,65 @@
     </section>
 
     <!-- Kontakt -->
-    <section id="kontakt" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-            <div class="md:w-1/3 bg-blue-600 p-10 text-white">
-                <h2 class="text-3xl font-bold mb-6">Skontaktuj się</h2>
-                <p class="mb-8 text-blue-100">Nasza doradcy są do Twojej dyspozycji od poniedziałku do piątku w godzinach 8:00 - 18:00.</p>
-                
-                <div class="space-y-6">
+    <section id="kontakt" class="py-24 max-w-7xl mx-auto px-4">
+        <div class="bg-white rounded-[2rem] shadow-2xl overflow-hidden flex flex-col lg:flex-row">
+            <div class="lg:w-2/5 bg-blue-600 p-12 text-white">
+                <h2 class="text-4xl font-bold mb-8">Porozmawiajmy o Twoim nowym domu</h2>
+                <div class="space-y-8">
                     <div class="flex items-center">
-                        <i class="fa-solid fa-phone w-8 text-xl"></i>
-                        <span>+48 123 456 789</span>
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4 text-xl shadow-lg"><i class="fa-solid fa-phone"></i></div>
+                        <div><p class="text-blue-200 text-xs uppercase">Zadzwoń</p><p class="text-xl font-bold">+48 500 600 700</p></div>
                     </div>
                     <div class="flex items-center">
-                        <i class="fa-solid fa-envelope w-8 text-xl"></i>
-                        <span>biuro@moderndev.pl</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fa-solid fa-location-dot w-8 text-xl"></i>
-                        <span>ul. Inwestycyjna 1, 00-001 Warszawa</span>
+                        <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mr-4 text-xl shadow-lg"><i class="fa-solid fa-envelope"></i></div>
+                        <div><p class="text-blue-200 text-xs uppercase">Napisz</p><p class="text-xl font-bold">dom@moderndev.pl</p></div>
                     </div>
                 </div>
             </div>
-
-            <div class="md:w-2/3 p-10">
-                <form class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Imię i nazwisko</label>
-                        <input type="text" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 border p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="Jan Kowalski">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Numer telefonu</label>
-                        <input type="tel" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 border p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="+48 ...">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-gray-700">Wiadomość</label>
-                        <textarea rows="4" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-50 border p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="W czym możemy pomóc?"></textarea>
-                    </div>
-                    <button class="md:col-span-2 bg-blue-600 text-white font-bold py-4 rounded-lg hover:bg-blue-700 transition">Wyślij zapytanie</button>
+            <div class="lg:w-3/5 p-12">
+                <form class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="sm:col-span-1"><input type="text" placeholder="Imię" class="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-blue-600 outline-none"></div>
+                    <div class="sm:col-span-1"><input type="email" placeholder="E-mail" class="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-blue-600 outline-none"></div>
+                    <div class="sm:col-span-2"><textarea rows="4" placeholder="W czym możemy pomóc?" class="w-full bg-gray-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-blue-600 outline-none"></textarea></div>
+                    <div class="sm:col-span-2"><button class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-all shadow-lg hover:shadow-blue-200">Wyślij zgłoszenie</button></div>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Stopka -->
-    <footer class="bg-gray-900 text-gray-400 py-10 text-center">
-        <p>&copy; 2023 ModernDev Deweloper. Wszystkie prawa zastrzeżone.</p>
+    <footer class="bg-gray-100 py-12 text-center text-gray-500 border-t">
+        <p>&copy; 2024 ModernDev. Wszystkie prawa zastrzeżone.</p>
     </footer>
 
     <script>
-        // Skrypt do obsługi menu mobilnego
+        // Obsługa menu mobilnego
         const btn = document.getElementById('mobile-menu-button');
         const menu = document.getElementById('mobile-menu');
+        btn.onclick = () => menu.classList.toggle('hidden');
 
-        btn.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
+        // Obsługa MODALA (Więcej informacji)
+        const modal = document.getElementById('infoModal');
+        
+        function openModal(title, loc, status, img, desc) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalLoc').innerText = loc;
+            document.getElementById('modalStatus').innerText = status;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalDesc').innerText = desc;
+            
+            modal.classList.remove('hidden');
+            document.body.classList.add('modal-active');
+        }
 
-        // Zamknij menu po kliknięciu w link (na mobile)
-        const links = menu.querySelectorAll('a');
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
+        function closeModal() {
+            modal.classList.add('hidden');
+            document.body.classList.remove('modal-active');
+        }
+
+        // Zamknij po kliknięciu ESC
+        window.onkeydown = function(event) {
+            if (event.key === "Escape") closeModal();
+        };
     </script>
 </body>
 </html>
