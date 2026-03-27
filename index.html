@@ -1,383 +1,288 @@
 <!DOCTYPE html>
-<html lang="pl" class="scroll-smooth">
+<html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ModernEstate | Architektura Jutra</title>
+    <title>ArchiBuild | Nowoczesny Deweloper</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        .bg-premium { background-color: #1a1a1a; }
+        .text-gold { color: #c5a059; }
+        .bg-gold { background-color: #c5a059; }
+        .modal-active { overflow: hidden; }
         
-        :root {
-            --primary: #6366f1; /* Indigo */
-            --bg-dark: #020617;
+        /* Płynne przejście menu mobilnego */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
         }
-
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--bg-dark);
-            color: #f8fafc;
+        #mobile-menu.open {
+            transform: translateX(0);
         }
-
-        .glass {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #6366f1 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .investment-card {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .investment-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(99, 102, 241, 0.5);
-            box-shadow: 0 20px 40px -20px rgba(99, 102, 241, 0.3);
-        }
-
-        .modal-enter {
-            animation: modalFadeIn 0.3s ease-out forwards;
-        }
-
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Ukrywanie scrollbara przy otwartym modalu */
-        .no-scroll { overflow: hidden; }
     </style>
 </head>
-<body class="selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="bg-gray-50 text-gray-900">
 
-    <!-- NAVIGATION -->
-    <nav class="fixed w-full z-[100] transition-all duration-300 px-4 py-4" id="main-nav">
-        <div class="max-w-7xl mx-auto">
-            <div class="glass rounded-2xl px-6 py-4 flex justify-between items-center">
-                <a href="#" class="text-2xl font-extrabold tracking-tighter flex items-center gap-2">
-                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                        <i class="fa-solid fa-cube text-white text-sm"></i>
-                    </div>
-                    <span>MODERN<span class="text-indigo-500 italic">ESTATE</span></span>
-                </a>
-                
-                <div class="hidden md:flex items-center gap-8 font-medium text-sm uppercase tracking-widest">
-                    <a href="#home" class="hover:text-indigo-400 transition">Start</a>
-                    <a href="#investments" class="hover:text-indigo-400 transition">Inwestycje</a>
-                    <a href="#about" class="hover:text-indigo-400 transition">O nas</a>
-                    <a href="#process" class="hover:text-indigo-400 transition">Proces</a>
-                    <a href="#contact" class="bg-indigo-600 text-white px-6 py-2.5 rounded-xl hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/20">Kontakt</a>
-                </div>
-
-                <button id="mobile-toggle" class="md:hidden text-2xl text-white">
-                    <i class="fa-solid fa-bars-staggered"></i>
-                </button>
+    <!-- Navigation -->
+    <nav class="fixed w-full z-[100] bg-white/95 backdrop-blur-md shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-4 flex justify-between items-center">
+            <div class="text-xl md:text-2xl font-bold tracking-tighter text-premium uppercase">ARCHI<span class="text-gold">BUILD</span></div>
+            
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex space-x-8 font-medium text-sm uppercase tracking-widest text-gray-700">
+                <a href="#inwestycje" class="hover:text-gold transition">Inwestycje</a>
+                <a href="#o-nas" class="hover:text-gold transition">O firmie</a>
+                <a href="#kontakt" class="hover:text-gold transition">Kontakt</a>
             </div>
-        </div>
 
-        <!-- Mobile Menu Overlay -->
-        <div id="mobile-menu" class="hidden fixed inset-x-4 top-24 glass rounded-3xl p-8 md:hidden shadow-2xl">
-            <div class="flex flex-col gap-6 text-center font-bold text-xl">
-                <a href="#home" class="mobile-link">Start</a>
-                <a href="#investments" class="mobile-link">Inwestycje</a>
-                <a href="#about" class="mobile-link">O nas</a>
-                <a href="#process" class="mobile-link">Proces</a>
-                <a href="#contact" class="mobile-link text-indigo-400">Kontakt</a>
-            </div>
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMenu(true)" class="lg:hidden text-premium focus:outline-none">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+
+            <a href="tel:+48123456789" class="hidden lg:block bg-premium text-white px-6 py-2 text-sm font-semibold hover:bg-gold transition rounded-sm">ZADZWOŃ</a>
         </div>
     </nav>
 
-    <!-- HERO -->
-    <section id="home" class="relative min-h-screen flex items-center pt-20">
-        <div class="absolute inset-0 z-0">
-            <div class="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-slate-950 to-slate-950"></div>
-            <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=2000" class="w-full h-full object-cover" alt="Hero">
+    <!-- Mobile Sidebar Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-premium z-[110] lg:hidden flex flex-col p-8">
+        <div class="flex justify-end">
+            <button onclick="toggleMenu(false)" class="text-white text-4xl">&times;</button>
         </div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-4 w-full">
-            <div class="max-w-3xl">
-                <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-500/20 px-4 py-2 rounded-full text-indigo-400 text-sm font-bold mb-8">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
-                    </span>
-                    ZAUFAŁO NAM JUŻ 500+ RODZIN
-                </div>
-                <h1 class="text-5xl md:text-8xl font-extrabold mb-8 leading-[1.1]">
-                    <span class="text-gradient">Architektura</span> <br>
-                    <span class="text-white">Nowej Ery.</span>
-                </h1>
-                <p class="text-slate-400 text-lg md:text-xl mb-12 max-w-xl leading-relaxed">
-                    Nie tylko budujemy. Tworzymy inteligentne ekosystemy do życia, które łączą naturę z technologią jutra.
-                </p>
-                <div class="flex flex-wrap gap-4">
-                    <a href="#investments" class="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-2xl font-bold transition flex items-center gap-3">
-                        Aktualne oferty <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ABOUT SECTION -->
-    <section id="about" class="py-32 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 relative z-10">
-            <div class="grid lg:grid-cols-2 gap-20 items-center">
-                <div>
-                    <h2 class="text-indigo-500 font-bold tracking-widest uppercase mb-4 text-sm">Poznaj ModernEstate</h2>
-                    <h3 class="text-4xl md:text-5xl font-bold mb-8 text-white leading-tight">Wizja, która stała się <span class="text-indigo-400 italic">rzeczywistością.</span></h3>
-                    <p class="text-slate-400 text-lg leading-relaxed mb-8">
-                        Jesteśmy grupą deweloperską nowej generacji. Od 12 lat zmieniamy polski rynek nieruchomości, stawiając na odważne projekty i materiały najwyższej klasy. Nasze biura projektowe znajdują się w Warszawie i Berlinie.
-                    </p>
-                    <div class="grid grid-cols-2 gap-10">
-                        <div>
-                            <div class="text-4xl font-extrabold text-white mb-2">150k m²</div>
-                            <p class="text-slate-500 text-sm uppercase font-bold tracking-widest">Zrealizowanej powierzchni</p>
-                        </div>
-                        <div>
-                            <div class="text-4xl font-extrabold text-white mb-2">0%</div>
-                            <p class="text-slate-500 text-sm uppercase font-bold tracking-widest">Opóźnień w dostawach</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative">
-                    <div class="absolute -inset-4 bg-indigo-600/20 blur-3xl rounded-full"></div>
-                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" class="relative rounded-3xl border border-white/10 shadow-2xl" alt="Office">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- INVESTMENTS -->
-    <section id="investments" class="py-32 bg-slate-900/30">
-        <div class="max-w-7xl mx-auto px-4 text-center mb-20">
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">Nasze Realizacje</h2>
-            <p class="text-slate-500 max-w-2xl mx-auto">Każda z naszych inwestycji to unikalna historia napisana przez światowej sławy architektów.</p>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-3 gap-8">
-            <!-- Item 1 -->
-            <div class="investment-card glass rounded-[2.5rem] p-4 group cursor-pointer" onclick="openModal('inv1')">
-                <div class="relative h-80 overflow-hidden rounded-[2rem] mb-6">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Inv 1">
-                    <div class="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold">WARSZAWA</div>
-                </div>
-                <div class="px-4 pb-6">
-                    <h4 class="text-2xl font-bold text-white mb-2 italic">Neon Plaza</h4>
-                    <p class="text-slate-400 text-sm mb-6">Centrum biznesowe z apartamentami typu loft.</p>
-                    <div class="flex justify-between items-center text-indigo-400 font-bold">
-                        <span>SPRAWDŹ DETALE</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 2 -->
-            <div class="investment-card glass rounded-[2.5rem] p-4 group cursor-pointer" onclick="openModal('inv2')">
-                <div class="relative h-80 overflow-hidden rounded-[2rem] mb-6">
-                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Inv 2">
-                    <div class="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold">GDAŃSK</div>
-                </div>
-                <div class="px-4 pb-6">
-                    <h4 class="text-2xl font-bold text-white mb-2 italic">Azure Marine</h4>
-                    <p class="text-slate-400 text-sm mb-6">Ekskluzywna rezydencja nad brzegiem morza.</p>
-                    <div class="flex justify-between items-center text-indigo-400 font-bold">
-                        <span>SPRAWDŹ DETALE</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 3 -->
-            <div class="investment-card glass rounded-[2.5rem] p-4 group cursor-pointer" onclick="openModal('inv3')">
-                <div class="relative h-80 overflow-hidden rounded-[2rem] mb-6">
-                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover group-hover:scale-110 transition duration-700" alt="Inv 3">
-                    <div class="absolute top-4 right-4 glass px-4 py-2 rounded-full text-xs font-bold">KRAKÓW</div>
-                </div>
-                <div class="px-4 pb-6">
-                    <h4 class="text-2xl font-bold text-white mb-2 italic">The Forest View</h4>
-                    <p class="text-slate-400 text-sm mb-6">Domy pasywne zintegrowane z ekosystemem lasu.</p>
-                    <div class="flex justify-between items-center text-indigo-400 font-bold">
-                        <span>SPRAWDŹ DETALE</span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- PROCESS -->
-    <section id="process" class="py-32">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex flex-col md:flex-row gap-10 items-end justify-between mb-20">
-                <h2 class="text-4xl md:text-6xl font-extrabold max-w-xl leading-tight">Proces prosty <br><span class="text-indigo-500 italic">jak nigdy.</span></h2>
-                <p class="text-slate-500 max-w-xs mb-4">Eliminujemy zbędną biurokrację. Skupiamy się na Twoim komforcie.</p>
-            </div>
-
-            <div class="grid md:grid-cols-4 gap-4">
-                <div class="glass p-10 rounded-[2rem] border-t-4 border-t-indigo-500">
-                    <div class="text-indigo-500 font-black text-6xl mb-6 opacity-20">01</div>
-                    <h5 class="text-xl font-bold mb-4 uppercase">Wybór</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">Personalizujemy ofertę pod Twoje plany życiowe i budżet.</p>
-                </div>
-                <div class="glass p-10 rounded-[2rem] border-t-4 border-t-indigo-400">
-                    <div class="text-indigo-400 font-black text-6xl mb-6 opacity-20">02</div>
-                    <h5 class="text-xl font-bold mb-4 uppercase">Umowa</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">Jasne warunki, cyfrowe podpisywanie dokumentów.</p>
-                </div>
-                <div class="glass p-10 rounded-[2rem] border-t-4 border-t-cyan-500">
-                    <div class="text-cyan-500 font-black text-6xl mb-6 opacity-20">03</div>
-                    <h5 class="text-xl font-bold mb-4 uppercase">Realizacja</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">Masz podgląd na żywo z kamer na budowie swojego domu.</p>
-                </div>
-                <div class="glass p-10 rounded-[2rem] border-t-4 border-t-white">
-                    <div class="text-white font-black text-6xl mb-6 opacity-20">04</div>
-                    <h5 class="text-xl font-bold mb-4 uppercase">Odbiór</h5>
-                    <p class="text-slate-400 text-sm leading-relaxed">Przekazanie kluczy w atmosferze luksusu i satysfakcji.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CONTACT & MAP -->
-    <section id="contact" class="py-32 px-4">
-        <div class="max-w-7xl mx-auto glass rounded-[3rem] overflow-hidden grid lg:grid-cols-2 shadow-2xl">
-            <div class="p-12 md:p-20">
-                <h2 class="text-4xl font-bold mb-10">Zróbmy pierwszy <br><span class="text-indigo-500 italic text-5xl">krok razem.</span></h2>
-                <form class="space-y-6">
-                    <div class="relative">
-                        <input type="text" placeholder="Imię i nazwisko" class="w-full bg-slate-900/50 border border-white/10 rounded-2xl px-6 py-4 focus:border-indigo-500 outline-none transition">
-                    </div>
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <input type="email" placeholder="E-mail" class="bg-slate-900/50 border border-white/10 rounded-2xl px-6 py-4 focus:border-indigo-500 outline-none transition">
-                        <input type="tel" placeholder="Telefon" class="bg-slate-900/50 border border-white/10 rounded-2xl px-6 py-4 focus:border-indigo-500 outline-none transition">
-                    </div>
-                    <textarea placeholder="Twoja wiadomość..." class="w-full bg-slate-900/50 border border-white/10 rounded-2xl px-6 py-4 h-32 focus:border-indigo-500 outline-none transition"></textarea>
-                    <button class="w-full bg-white text-black font-extrabold py-5 rounded-2xl hover:bg-indigo-500 hover:text-white transition-all transform hover:-translate-y-1">WYŚLIJ ZAPYTANIE</button>
-                </form>
-            </div>
-            <div class="min-h-[400px] relative grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition duration-700">
-                <!-- Google Map -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2443.5186632483526!2d20.9998184770634!3d52.23214435738875!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecc8e6840d6c1%3A0xc6a87c140c83a7f!2sZ%C5%82ota%2044%2C%2000-120%20Warszawa!5e0!3m2!1spl!2spl!4v1711234567890!5m2!1spl!2spl" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="py-20 border-t border-white/5">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div class="text-2xl font-black">MODERN<span class="text-indigo-500">ESTATE</span></div>
-            <div class="flex gap-10 text-slate-500 text-sm font-bold uppercase tracking-widest">
-                <a href="#" class="hover:text-white transition">Instagram</a>
-                <a href="#" class="hover:text-white transition">LinkedIn</a>
-                <a href="#" class="hover:text-white transition">Facebook</a>
-            </div>
-            <p class="text-slate-600 text-xs">© 2026 ModernEstate Dev. Wszelkie prawa zastrzeżone.</p>
-        </div>
-    </footer>
-
-    <!-- MODAL -->
-    <div id="investment-modal" class="fixed inset-0 z-[200] hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-slate-950/90 backdrop-blur-xl" onclick="closeModal()"></div>
-        <div class="relative glass w-full max-w-6xl max-h-[90vh] rounded-[3rem] overflow-y-auto modal-enter shadow-3xl">
-            <button onclick="closeModal()" class="fixed top-8 right-8 w-12 h-12 glass rounded-full flex items-center justify-center text-white hover:bg-indigo-600 transition z-[210]">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-            <div id="modal-content" class="p-8 md:p-16"></div>
+        <div class="flex flex-col space-y-8 mt-12 text-white text-xl uppercase tracking-widest font-light">
+            <a href="#inwestycje" onclick="toggleMenu(false)">Inwestycje</a>
+            <a href="#o-nas" onclick="toggleMenu(false)">O firmie</a>
+            <a href="#kontakt" onclick="toggleMenu(false)">Kontakt</a>
+            <div class="h-px bg-gold/30 w-full my-4"></div>
+            <a href="tel:+48123456789" class="text-gold font-bold">Zadzwoń do nas</a>
         </div>
     </div>
 
-    <script>
-        const investmentData = {
-            inv1: {
-                title: "Neon Plaza",
-                tag: "Business & Life",
-                desc: "Inteligentne biura i apartamenty w sercu Warszawy. Budynek wyposażony w systemy filtracji powietrza klasy medycznej oraz prywatny ogród na dachu dostępny 24/7.",
-                features: ["Szybkie windy (4m/s)", "Karta mieszkańca", "Lobby z baristą"],
-                img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200"
-            },
-            inv2: {
-                title: "Azure Marine",
-                tag: "Exclusive Resort",
-                desc: "Pierwsza linia brzegowa. Przeszklone fasady dają poczucie jedności z morzem. Własna przystań dla jachtów i strefa spa o powierzchni 2000 m².",
-                features: ["Prywatna plaża", "System Smart-Sea", "Garaże premium"],
-                img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200"
-            },
-            inv3: {
-                title: "The Forest View",
-                tag: "Eco Sanctuary",
-                desc: "Zrównoważone budownictwo w otulinie parku narodowego. Drewno, kamień i szkło – zero plastiku. Samowystarczalność energetyczna dzięki technologii wodorowej.",
-                features: ["Zero Emisji", "Własna woda głębinowa", "Park leśny"],
-                img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1200"
-            }
-        };
+    <!-- Hero Section -->
+    <section class="relative h-[90vh] md:h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2000" alt="Modern Building" class="w-full h-full object-cover brightness-50">
+        </div>
+        <div class="relative z-10 text-center text-white px-6">
+            <h1 class="text-4xl md:text-7xl mb-4 md:mb-6 tracking-tight leading-tight">Architektura Jutra,<br>Dziś.</h1>
+            <p class="text-base md:text-xl mb-8 md:mb-10 font-light max-w-2xl mx-auto italic opacity-90">„Twoja przestrzeń, nasza pasja do perfekcji.”</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#inwestycje" class="bg-gold text-white px-8 py-4 font-bold rounded-sm hover:bg-opacity-90 transition shadow-lg uppercase text-sm">Sprawdź lokale</a>
+                <a href="#kontakt" class="border border-white text-white px-8 py-4 font-bold rounded-sm hover:bg-white hover:text-black transition uppercase text-sm">Kontakt</a>
+            </div>
+        </div>
+    </section>
 
-        // Navigation effects
-        window.onscroll = function() {
-            const nav = document.getElementById('main-nav');
-            if (window.scrollY > 50) {
-                nav.classList.add('py-2');
-            } else {
-                nav.classList.remove('py-2');
-            }
-        };
-
-        // Modal Logic
-        function openModal(id) {
-            const data = investmentData[id];
-            const content = `
-                <div class="grid lg:grid-cols-2 gap-16">
-                    <div class="rounded-3xl overflow-hidden h-[400px] md:h-full">
-                        <img src="${data.img}" class="w-full h-full object-cover">
+    <!-- About Us Section -->
+    <section id="o-nas" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <div class="relative order-2 lg:order-1">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1200" alt="Biuro" class="w-full h-[350px] md:h-[500px] object-cover rounded-lg shadow-xl">
+                    <div class="absolute -bottom-4 -left-4 md:-bottom-6 md:-left-6 bg-gold p-6 md:p-8 text-white shadow-xl">
+                        <p class="text-3xl md:text-5xl font-bold">15 lat</p>
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest font-semibold">Doświadczenia</p>
                     </div>
-                    <div>
-                        <span class="text-indigo-400 font-bold uppercase tracking-widest text-sm mb-4 block">${data.tag}</span>
-                        <h2 class="text-5xl font-extrabold text-white mb-8 italic">${data.title}</h2>
-                        <p class="text-slate-400 text-lg leading-relaxed mb-10">${data.desc}</p>
-                        <div class="space-y-4 mb-10">
-                            ${data.features.map(f => `<div class="flex items-center gap-4 text-white font-medium"><i class="fa-solid fa-check text-indigo-500"></i> ${f}</div>`).join('')}
+                </div>
+                <div class="order-1 lg:order-2">
+                    <h4 class="text-gold font-bold tracking-[4px] uppercase text-[10px] md:text-sm mb-4 text-center lg:text-left">Poznaj nas</h4>
+                    <h2 class="text-3xl md:text-4xl mb-6 text-premium leading-tight text-center lg:text-left">Budujemy z myślą o pokoleniach</h2>
+                    <p class="text-gray-600 mb-6 leading-relaxed text-base md:text-lg">
+                        ArchiBuild to synonim jakości. Od 2008 roku realizujemy projekty łączące nowoczesny design z najwyższą funkcjonalnością. Dbamy o każdy detal – od fundamentów po wykończenie klatek.
+                    </p>
+                    <div class="space-y-4 max-w-md mx-auto lg:mx-0">
+                        <div class="flex items-center space-x-4 text-sm md:text-base">
+                            <span class="bg-gray-100 p-2 text-gold rounded-full">✔</span>
+                            <span class="font-medium">Prestiżowe lokalizacje</span>
                         </div>
-                        <div class="flex flex-col sm:flex-row gap-4">
-                            <button class="bg-indigo-600 text-white px-8 py-4 rounded-2xl font-bold flex-grow hover:bg-indigo-500 transition shadow-xl shadow-indigo-600/20">ZAMÓW KATALOG PDF</button>
-                            <button class="bg-white/10 text-white px-8 py-4 rounded-2xl font-bold hover:bg-white/20 transition">WIRTUALNY SPACER</button>
+                        <div class="flex items-center space-x-4 text-sm md:text-base">
+                            <span class="bg-gray-100 p-2 text-gold rounded-full">✔</span>
+                            <span class="font-medium">Materiały klasy Premium</span>
                         </div>
                     </div>
                 </div>
-            `;
-            document.getElementById('modal-content').innerHTML = content;
-            document.getElementById('investment-modal').classList.remove('hidden');
-            document.getElementById('investment-modal').classList.add('flex');
-            document.body.classList.add('no-scroll');
+            </div>
+        </div>
+    </section>
+
+    <!-- Investment Grid -->
+    <section id="inwestycje" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12 md:mb-16">
+                <h2 class="text-3xl md:text-4xl mb-4 text-premium">Nasze Inwestycje</h2>
+                <div class="w-20 h-1 bg-gold mx-auto mb-4"></div>
+                <p class="text-gray-500 text-sm italic">Kliknij w projekt, aby zobaczyć metraże i detale.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                <!-- Inwestycja 1 -->
+                <div class="group cursor-pointer bg-white shadow-md rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl" 
+                     onclick="openModal('Amber Residence', 'Warszawa, Mokotów', 'Ekskluzywny apartamentowiec z prywatną strefą spa i recepcją.', 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=1000', '42 - 156 m²', '1 - 5', '6 Pięter', 'IV Kwartał 2024')">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 bg-gold text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Premium</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2">Amber Residence</h3>
+                        <p class="text-gray-400 text-xs mb-4">📍 Mokotów, Warszawa</p>
+                        <div class="flex justify-between items-center border-t pt-4">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">od 42 m²</span>
+                            <span class="text-gold font-bold text-xs uppercase tracking-widest">Szczegóły</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inwestycja 2 -->
+                <div class="group cursor-pointer bg-white shadow-md rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl"
+                     onclick="openModal('Gardenia Park', 'Kraków', 'Osiedle domów jednorodzinnych otoczone zielenią.', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000', '85 - 210 m²', '4 - 6', '1 Piętro', 'Gotowe')">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 bg-premium text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Ostatnie sztuki</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2">Gardenia Park</h3>
+                        <p class="text-gray-400 text-xs mb-4">📍 Kraków</p>
+                        <div class="flex justify-between items-center border-t pt-4">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">od 85 m²</span>
+                            <span class="text-gold font-bold text-xs uppercase tracking-widest">Szczegóły</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inwestycja 3 -->
+                <div class="group cursor-pointer bg-white shadow-md rounded-sm overflow-hidden transition-all duration-300 hover:shadow-xl"
+                     onclick="openModal('Sky Tower', 'Wrocław', 'Apartamenty z widokiem na panoramę miasta.', 'https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=1000', '31 - 92 m²', '1 - 4', '18 Pięter', '2025 r.')">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&q=80&w=1000" class="w-full h-full object-cover">
+                        <div class="absolute top-4 left-4 bg-gray-400 text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest">Planowane</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl mb-2">Sky Tower View</h3>
+                        <p class="text-gray-400 text-xs mb-4">📍 Wrocław</p>
+                        <div class="flex justify-between items-center border-t pt-4">
+                            <span class="text-[10px] font-bold text-gray-400 uppercase">od 31 m²</span>
+                            <span class="text-gold font-bold text-xs uppercase tracking-widest">Szczegóły</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal for Investment Details (FULL MOBILE ADAPTIVE) -->
+    <div id="investmentModal" class="fixed inset-0 z-[150] hidden items-end md:items-center justify-center p-0 md:p-4 bg-black/80 backdrop-blur-sm">
+        <div class="bg-white w-full md:max-w-5xl h-[95vh] md:h-auto overflow-y-auto rounded-t-2xl md:rounded-sm relative shadow-2xl flex flex-col md:flex-row">
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-4xl font-light hover:text-gold transition text-gray-800 z-50">&times;</button>
+            
+            <div class="w-full md:w-5/12 h-[250px] md:h-auto">
+                <img id="modalImg" src="" alt="Building" class="w-full h-full object-cover">
+            </div>
+            
+            <div class="w-full md:w-7/12 p-6 md:p-12">
+                <h3 id="modalTitle" class="text-2xl md:text-4xl mb-2 text-premium uppercase"></h3>
+                <p id="modalLoc" class="text-gold font-bold mb-6 text-[10px] md:text-sm tracking-widest uppercase"></p>
+                
+                <p id="modalDesc" class="text-gray-600 leading-relaxed mb-8 text-sm md:text-lg font-light"></p>
+                
+                <div class="grid grid-cols-2 gap-3 md:gap-4 mb-8">
+                    <div class="bg-gray-50 p-3 md:p-4 border-l-4 border-gold">
+                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Metraż</p>
+                        <p id="modalArea" class="font-bold text-xs md:text-base text-premium"></p>
+                    </div>
+                    <div class="bg-gray-50 p-3 md:p-4 border-l-4 border-gold">
+                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Pokoje</p>
+                        <p id="modalRooms" class="font-bold text-xs md:text-base text-premium"></p>
+                    </div>
+                    <div class="bg-gray-50 p-3 md:p-4 border-l-4 border-gold">
+                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Piętra</p>
+                        <p id="modalFloors" class="font-bold text-xs md:text-base text-premium"></p>
+                    </div>
+                    <div class="bg-gray-50 p-3 md:p-4 border-l-4 border-gold">
+                        <p class="text-[9px] uppercase text-gray-400 font-bold mb-1">Oddanie</p>
+                        <p id="modalDelivery" class="font-bold text-xs md:text-base text-premium"></p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button onclick="closeModal()" class="w-full bg-premium text-white py-4 font-bold tracking-widest uppercase text-xs">Pobierz kartę lokali</button>
+                    <a href="#kontakt" onclick="closeModal()" class="w-full border-2 border-premium text-premium py-4 font-bold text-center uppercase text-xs">Zapytaj o cenę</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <section id="kontakt" class="py-16 md:py-24 bg-white px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl mb-4 text-premium">Kontakt</h2>
+            <p class="text-gray-500 mb-12 text-sm">Zostaw wiadomość, oddzwonimy w 15 minut.</p>
+            
+            <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" placeholder="Imię" class="w-full border-b-2 border-gray-100 py-4 focus:outline-none focus:border-gold transition text-sm">
+                    <input type="tel" placeholder="Telefon" class="w-full border-b-2 border-gray-100 py-4 focus:outline-none focus:border-gold transition text-sm">
+                </div>
+                <input type="email" placeholder="E-mail" class="w-full border-b-2 border-gray-100 py-4 focus:outline-none focus:border-gold transition text-sm">
+                <textarea placeholder="W czym możemy pomóc?" class="w-full border-b-2 border-gray-100 py-4 focus:outline-none focus:border-gold transition h-32 text-sm"></textarea>
+                <button class="w-full bg-gold text-white font-bold py-5 tracking-[4px] hover:bg-premium transition text-xs uppercase">Wyślij zgłoszenie</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 bg-premium text-white text-center px-6">
+        <div class="text-xl font-bold mb-4 tracking-tighter uppercase">ARCHI<span class="text-gold">BUILD</span></div>
+        <p class="text-gray-500 text-[10px] uppercase tracking-widest">© 2024 ArchiBuild Developer. Wszelkie prawa zastrzeżone.</p>
+    </footer>
+
+    <script>
+        // Zarządzanie menu mobilnym
+        function toggleMenu(isOpen) {
+            const menu = document.getElementById('mobile-menu');
+            if (isOpen) {
+                menu.classList.add('open');
+                document.body.classList.add('modal-active');
+            } else {
+                menu.classList.remove('open');
+                document.body.classList.remove('modal-active');
+            }
+        }
+
+        // Zarządzanie modalem
+        function openModal(title, loc, desc, img, area, rooms, floors, delivery) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalLoc').innerText = "📍 " + loc;
+            document.getElementById('modalDesc').innerText = desc;
+            document.getElementById('modalImg').src = img;
+            document.getElementById('modalArea').innerText = area;
+            document.getElementById('modalRooms').innerText = rooms;
+            document.getElementById('modalFloors').innerText = floors;
+            document.getElementById('modalDelivery').innerText = delivery;
+            
+            const modal = document.getElementById('investmentModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.classList.add('modal-active');
         }
 
         function closeModal() {
-            document.getElementById('investment-modal').classList.add('hidden');
-            document.getElementById('investment-modal').classList.remove('flex');
-            document.body.classList.remove('no-scroll');
+            const modal = document.getElementById('investmentModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.classList.remove('modal-active');
         }
 
-        // Mobile Menu Toggle
-        const toggle = document.getElementById('mobile-toggle');
-        const menu = document.getElementById('mobile-menu');
-        const links = document.querySelectorAll('.mobile-link');
-
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('hidden');
-        });
-
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.add('hidden');
-            });
-        });
+        // Zamykanie modala po kliknięciu poza oknem
+        window.onclick = function(event) {
+            const modal = document.getElementById('investmentModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
     </script>
+
 </body>
 </html>
